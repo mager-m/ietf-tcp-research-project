@@ -12,7 +12,7 @@ To implement a prototype which supports the IETF TCP Model (draft) the open-sour
 
 Out-of-the-box Clixon does not support the QNX operating system, so the implementation phase included porting Clixon to this new OS and ensuring everything works as expected. The changes that were required in the source code of Clixon were pushed back to the GitHub repository to make the open-source solution more powerful and extend it to further use cases.
 
-The following implementations are available in this repository
+The following implementations are available in this repository and contain their own README with additional information.
 
 1. [tcp-plugin-ubuntu](/tcp-plugin-ubuntu)
 2. tcp-plugin-qnx (coming soon)
