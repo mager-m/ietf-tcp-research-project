@@ -1,4 +1,4 @@
-# Research Implementation of the IETF TCP Yang Model (Draft)
+# Research Implementation of the IETF TCP Yang Model
 
 This repository contains the result of a research project conducted with the [Esslingen University](https://www.hs-esslingen.de/en/) in which the new IETF TCP YANG model [draft-ietf-tcpm-yang-tcp](https://datatracker.ietf.org/doc/html/draft-ietf-tcpm-yang-tcp) has been evaluated. Over the course of the project (two semesters), the internet-draft has been analyzed in detail to provide helpful feedback to the TCPM working group of the IETF about the proposed YANG model. This analysis included developing a prototype for multiple platforms (Linux and Blackberry QNX) to discover potential implementation issues and check the compatibility of the suggested YANG model with existing and commonly used operating systems.
 
