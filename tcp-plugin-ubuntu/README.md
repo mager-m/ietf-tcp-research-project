@@ -24,7 +24,7 @@ The assembly of the corresponding netconf message is performed in [`plugin_state
 
 If Clixon is already installed and configured on the target system you can skip the next step.
 
-### Clixon Base Installation ([additional information](https://clixon-docs.readthedocs.io/en/latest/install.html#))
+### Install Clixon ([additional information](https://clixon-docs.readthedocs.io/en/latest/install.html#))
 
 Install required packages:
 
@@ -55,7 +55,7 @@ Configure NETCONF as SSH-Subsystem in `etc/sshd_config`
 Subsystem netconf /usr/local/bin/clixon_netconf
 ```
 
-### Build & Configure TCP plugin prototype
+### Configure TCP plugin
 
 - Create the required folder structure for the TCP plugin (optional)
 
@@ -112,6 +112,11 @@ Subsystem netconf /usr/local/bin/clixon_netconf
         <CLICON_XMLDB_DIR>/your/tcp/plugin/location</CLICON_XMLDB_DIR>
         ```
 
+### Build & Run TCP plugin
+
+[CMake](https://cmake.org/) 3.16 is used as build system for the plugin. Therefore the source code can be compiled with the command `cmake --build .`
+
+To execute the plugin, the `clixon_backend` executable (see step: Install Clixon) must be launched  with the following parameters `-f /your/tcp/plugin/location/plugin_config.xml`.
 
 ## Further Information
 
