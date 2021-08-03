@@ -1,6 +1,8 @@
-# TCP Plugin Ubuntu
+# TCP Plugin QNX
 
-This folder contains the IETF TCP plugin prototype for the Ubuntu operating system. The implementation is based on the YANG-based configuration manager [Clixon](https://github.com/clicon/clixon).
+This folder contains the IETF TCP plugin prototype for the QNX operating system (coming soon). 
+
+The implementation is based on the YANG-based configuration manager [Clixon](https://github.com/clicon/clixon).
 
 ## Architecture
 
@@ -14,48 +16,7 @@ The prototype plugin for the new IETF TCP YANG model interacts with the network 
 
 ![architecture](../images/plugin-architecture.svg)
 
-## Implementation
-
-The TCP statistics and connection list specified in the YANG model are retrieved from `/proc/net/snmp` and `/proc/net/tcp`of the target operating system using the utility methods in [`utility_tcp.cpp`](utility_tcp.cpp).
-
-The assembly of the corresponding netconf message is performed in [`plugin_state.cpp`](plugin_state.cpp).
-
-## Installation (Ubuntu)
-
-If Clixon is already installed and configured on the target system you can skip the next step.
-
-### Clixon Base Installation ([additional information](https://clixon-docs.readthedocs.io/en/latest/install.html#))
-
-Install required packages:
-
-```
-sudo apt-get install flex bison
-```
-
-Install and build CLIgen:  
-
-```
-git clone https://github.com/clicon/cligen.git
-cd cligen;
-configure
-make;
-make install
-```
-
-Add a clxion user and group:
-
-```
-sudo useradd -M -U clixon
-sudo usermod -a -G clixon <your user>
-```
-
-Configure NETCONF as SSH-Subsystem in `etc/sshd_config`
-
-```
-Subsystem netconf /usr/local/bin/clixon_netconf
-```
-
-### Build & Configure TCP plugin prototype
+## Build & Configure TCP plugin prototype
 
 - Create the required folder structure for the TCP plugin (optional)
 
@@ -112,9 +73,11 @@ Subsystem netconf /usr/local/bin/clixon_netconf
         <CLICON_XMLDB_DIR>/your/tcp/plugin/location</CLICON_XMLDB_DIR>
         ```
 
+## Ubuntu vs QNX TCP Plugin
 
 ## Further Information
 
 - [Clixon Documentation](https://clixon-docs.readthedocs.io/en/latest/index.html#)
 - [IETF TCP Plugin](https://datatracker.ietf.org/doc/html/draft-ietf-tcpm-yang-tcp)
 - [TCP Plugin](../Forschungskolloquium_SimonBauer_MartinMager_ProfScharf.pdf)
+- [QNX Neutrino RTOS](https://blackberry.qnx.com/en/software-solutions/embedded-software/qnx-neutrino-rtos)
