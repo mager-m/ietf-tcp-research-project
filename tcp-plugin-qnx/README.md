@@ -73,8 +73,6 @@ The prototype plugin for the new IETF TCP YANG model interacts with the network 
         <CLICON_XMLDB_DIR>/your/tcp/plugin/location</CLICON_XMLDB_DIR>
         ```
 
-## Ubuntu vs QNX TCP Plugin
-
 ## Further Information
 
 - [Clixon Documentation](https://clixon-docs.readthedocs.io/en/latest/index.html#)
