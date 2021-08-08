@@ -1,6 +1,6 @@
 # TCP Plugin QNX
 
-This folder contains the IETF TCP plugin prototype for the QNX operating system (coming soon). 
+This folder contains the IETF TCP plugin prototype for the QNX operating system.
 
 The implementation is based on the YANG-based configuration manager [Clixon](https://github.com/clicon/clixon).
 
