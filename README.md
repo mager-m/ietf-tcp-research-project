@@ -15,7 +15,7 @@ Out-of-the-box Clixon does not support the QNX operating system, so the implemen
 The following implementations are available in this repository and contain their own README with additional information.
 
 1. [tcp-plugin-ubuntu](/tcp-plugin-ubuntu)
-2. [tcp-plugin-qnx](/tcp-plugin-qnx) (coming soon)
+2. [tcp-plugin-qnx](/tcp-plugin-qnx)
 
 ## Contribution
 
