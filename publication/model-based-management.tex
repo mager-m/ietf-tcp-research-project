@@ -1,0 +1,108 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{hhline}
+\usepackage{xcolor}
+\usepackage{pgffor}
+\usepackage{hyperref}
+\usepackage{lipsum}
+\usepackage{listings}
+\usepackage{pifont}
+\usepackage{xkvltxp}
+\usepackage{fixme}
+\usepackage{makecell}
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+
+\lstset{
+  frame=single,
+  language=clean,
+  basicstyle=\small,
+  captionpos=b,
+  linewidth=\linewidth
+}
+
+\makeatletter
+\def\lst@makecaption{%
+  \def\@captype{figure}%
+  \@makecaption
+}
+\makeatother
+
+\newcommand{\inlinelst}[1]{\lstinline[columns=fixed]{#1}}
+
+\fxsetup{status=draft,layout=inline,theme=color,author=}
+    
+%%%%%%%%%%%%%%%%%%
+% Begin Document
+%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{Evaluation of the YANG-based network management framework Clixon}
+
+%%%%%%%%%%%%%%%%%%
+% Authors
+%%%%%%%%%%%%%%%%%%
+
+\author{
+    \IEEEauthorblockN{Simon Bauer}
+    \IEEEauthorblockA{
+        \textit{Esslingen University of} \\
+        \textit{Applied Sciences} \\
+        bauer-s-public@outlook.com
+    }
+\and
+    \IEEEauthorblockN{Martin Mager}
+    \IEEEauthorblockA{
+        \textit{Esslingen University of} \\
+        \textit{Applied Sciences} \\
+        magerm.dev@gmail.com
+}
+\and
+    \IEEEauthorblockN{Michael Scharf}
+    \IEEEauthorblockA{
+        \textit{Esslingen University of} \\
+        \textit{Applied Sciences} \\
+        michael.scharf@hs-esslingen.de
+    }
+}
+
+%%%%%%%%%%%%%%%%%%
+% Title
+%%%%%%%%%%%%%%%%%%
+\maketitle
+
+%%%%%%%%%%%%%%%%%%
+% Abstract + Keywords
+%%%%%%%%%%%%%%%%%%
+\input{contents/_A_abstract}
+
+%%%%%%%%%%%%%%%%%%
+% Contents
+%%%%%%%%%%%%%%%%%%
+
+\input{contents/1_Introduction}
+\input{contents/2_ClixonFramework}
+\input{contents/3_Prototype}
+\input{contents/4_RelatedWork}
+\input{contents/5_Conclusion}
+
+%%%%%%%%%%%%%%%%%%
+% References
+%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,bib}
+
+\end{document}

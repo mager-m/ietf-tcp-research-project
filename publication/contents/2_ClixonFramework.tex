@@ -1,0 +1,159 @@
+\section{Clixon Framework}
+\label{sec:clixon-framework}
+
+\textit{Clixon} is an open-source YANG-based configuration manager that has been developed by Olof Hagsand since 2009. 
+
+The framework is characterized by its modular structure and plugin architecture which allows for easy extension and modification. \textit{Clixon} provides inbuilt support for datastore management and multiple common interfaces, namely \textit{CLI}, \textit{NETCONF} and \textit{RESTCONF}. 
+
+\textit{Clixon} is targeted towards GNU/Linux and virtualized environments, like Docker, but a community driven FreeBSD port is available in addition to that. Due to the broad platform support, the framework can be used in a variety of environments and for different scenarios.
+
+This section is structured as follows. First, the overall architecture of the framework is presented. Then, the important plugin architecture is discussed in more detail. Finally, the available features of \textit{Clixon} are compared with \textit{Netopeer2} and \textit{ConfD}.
+
+%%%%%%%%%%%%%%%%%%
+% Overall Architecture
+%%%%%%%%%%%%%%%%%%
+\subsection{Overall Architecture}
+
+\textit{Clixon} is built in a modular fashion to allow for easy extension and integration. The overall system architecture is shown in Fig.~\ref{fig:architecture}, highlighting the major components of a common usage scenario~\cite{clixon-documentation, clixon-repo}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{assets/3_ClixonFramework/Clixon_Architecture_v.png}
+    \caption{Clixon Architecture.}
+    \label{fig:architecture}
+\end{figure}
+
+\begin{enumerate}
+    \item \textit{Backend}: The backend daemon handles various core functionalities of the framework. These includes tasks such as managing data stores, privileges and the plugin system. In addition, it provides a \mbox{NETCONF-based} inter-process communication (IPC) bus to enable communication with the other framework components.
+    
+    \item \textit{Interfaces}: The already built-in internal clients CLI, RESTCONF and NETCONF provide external interfaces for management. These includes RESTCONF over HTTP/HTTPS, NETCONF over TCP or SSH and an interactive CLI Interface. By default, the internal clients are running as separate processes that communicate with the backend via IPC.
+
+    \item \textit{Plugins}: Plugins are shared libraries which provide the required system interaction with the base system for the various YANG specifications. Plugins attach to certain events and therefore get notified of configuration changes and are able to provide state data from the system. The Plugin architecture is discussed in more detail in section \ref{sec:clixon-framework_plugin-architecture}.
+
+    \item \textit{Datastores}: \textit{Clixon} implements the \textit{candidate}, \textit{running}, and \textit{startup} datastores, specified in RFC 6241~\cite{RFC6241}. In addition, \textit{Clixon} provides an interface for interacting with the datastores provided, facilitating transactional workflows. Currently, \textit{Clixon} does not offer support for the Network Management Datastore Architecture (NMDA)~\cite{RFC8342} and therefore does not provide an \textit{intended} and \textit{operational} datastore. However, due to the extensible structure of the \textit{Clixon} framework, this feature can be implemented with reasonable effort.
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%
+% Plugin Architecture
+%%%%%%%%%%%%%%%%%%
+\subsection{Plugin Architecture}
+\label{sec:clixon-framework_plugin-architecture}
+
+The \textit{Clixon} daemon loads the YANG modules and therefore knows about the structure of the involved data. This allows \textit{Clixon} to maintain the datastores, handle read and update requests, and expose this functionality via its interfaces. The daemon on its own, however, does not have any knowledge about the semantics of the involved YANG model and in consequence is unable to apply any changes to the base system.
+
+The semantics is provided to \textit{Clixon} in the form of plugins which implement the required logic to interact with the system. Plugins are dynamically loaded shared objects which expose a function named \inlinelst{clixon\_plugin\_init}. This method is called during startup and allows plugins to attach various callbacks to the \textit{Clixon} daemon. Besides several lifecycle events, like \inlinelst{start}, \inlinelst{daemon} and \inlinelst{exit}, the main callbacks consist of several transaction hooks, such as \inlinelst{trans\_begin}, \inlinelst{trans\_commit} and \inlinelst{trans\_abort}, and a callback to provide state data. Other useful events exist to handle YANG extension data, datastore upgrades, remote procedure call (RPC) events and system resets.
+
+\textit{Clixon} follows NETCONF in terms of validate and commit semantics and provides the necessary infrastructure for transaction processing. Plugins usually subscribe to multiple lifecycle events of the transaction and thereby supply the logic to validate the configuration changes and incrementally upgrade the system state based on the configuration changes. \text{Clixon} provides a feature-rich XML and transaction interface that allows plugins to easily detect changes in the XML tree and act accordingly.
+
+
+%%%%%%%%%%%%%%%%%%
+% Feature Comparison
+%%%%%%%%%%%%%%%%%%
+\subsection{Feature Comparison}
+
+There are several NETCONF/YANG frameworks with varying functionality and support for the respective standards. This section is used to compare \textit{Clixon} with two well-known alternatives, namely the open-source tool \textit{Netopeer2} and the commercial, and therefore closed-source framework \textit{ConfD}. As criteria for the comparison, the supported RFC standards are analyzed, as well as the support for XML and XPath.
+
+\textit{Netopeer2} is a NETCONF server implementation based on the open-source projects \textit{libyang}, \textit{libnetconf2} and \textit{sysrepo}. It is in its second generation and is already well-established in the field of network management~\cite{netopeer2}.
+
+\textit{ConfD}, developed by the \textit{Cisco} company \textit{Tail-F}, is a commercially distributed NETCONF/YANG toolset. It is available in a free and limited \textit{Basic} or paid \textit{Premium} edition. \textit{ConfD} is built on a more than 10-year development foundation and offers a variety of features that the open-source solutions cannot provide. In the following, only the premium version of \textit{ConfD} is considered~\cite{confd}.
+
+Table~\ref{tab:clixon-features} presents a brief overview and comparison of the features provided by the above-mentioned NETCONF/YANG frameworks.
+
+% summary
+
+The comparison has shown that \textit{Netopeer2} is the only network management framework in the comparison that does not offer a RESTCONF interface. 
+Furthermore, it is noticeable that \textit{Clixon} offers only partial support for certain standards, which in many cases is due to diverging default values or left-out features. In addition, \textit{Clixon} does not currently support NMDA for NETCONF. The commercial solution \textit{ConfD} scores best across all analyzed criteria, but comes at an expensive price.
+
+\begin{table*}[ht]
+    \caption{Feature Comparison}
+
+    \begin{center}
+        \begin{tabular}{|l|c|c|c|c|}
+
+            % YANG
+            \hline
+            \textbf{YANG} &\textbf{RFC} & \textbf{\textit{Clixon}} \textit{(v5.4.0)} & \textbf{\textit{Netopeer2}} \textit{(v2.0.35)} & \textbf{\textit{ConfD}} \textit{(v7.6)} \\ 
+        
+            \hhline{|=|=|=|=|=|}
+            YANG 1.0 & \href{https://datatracker.ietf.org/doc/html/rfc6020}{6020} & \cmark & \cmark & \cmark \\                  
+            
+            \hline
+            YANG 1.1 & \href{https://datatracker.ietf.org/doc/html/rfc7950}{7950} & (\cmark)                 & \cmark & \cmark \\  
+            
+            \hline
+            YANG Library & \href{https://datatracker.ietf.org/doc/html/rfc8525}{8525} & (\cmark) & \cmark & \cmark \\ 
+            
+            \hline
+            \multicolumn{5}{c}{}\\
+            
+            % 
+            \hline
+            \textbf{NETCONF} &\textbf{RFC} & \textbf{\textit{Clixon}} \textit{(v5.4.0)} & \textbf{\textit{Netopeer2}} \textit{(v2.0.35)} & \textbf{\textit{ConfD}} \textit{(v7.6)} \\ 
+            
+            \hhline{|=|=|=|=|=|}
+            NETCONF Event Notifications & \href{https://datatracker.ietf.org/doc/html/rfc5277}{5277} & (\cmark) & \cmark & \cmark \\ 
+            
+            \hline
+            Network Configuration Protocol (NETCONF) & \href{https://datatracker.ietf.org/doc/html/rfc6241}{6241} & (\cmark) & \cmark & \cmark \\ 
+            
+            \hline
+            Using the NETCONF Protocol over Secure Shell (SSH) & \href{https://datatracker.ietf.org/doc/html/rfc6242}{6242} & \cmark & \cmark & \cmark \\ 
+            
+            \hline
+            NETCONF Call Home and RESTCONF Call Home & \href{https://datatracker.ietf.org/doc/html/rfc8071}{8071} & (\cmark) & \cmark & \cmark \\ 
+            
+            \hline
+            Network Configuration Access Control Model & \href{https://datatracker.ietf.org/doc/html/rfc8341}{8341} & \cmark & \cmark & \cmark \\ 
+            
+            \hline
+            NETCONF Extensions to Support the NMDA & \href{https://datatracker.ietf.org/doc/html/rfc8526}{8526} & \xmark & \cmark & \cmark \\ 
+
+            \hline
+
+            \multicolumn{5}{c}{}\\
+            
+            % RESTCONF
+            \hline
+            \textbf{RESTCONF} &\textbf{RFC} & \textbf{\textit{Clixon}} \textit{(v5.4.0)} & \textbf{\textit{Netopeer2}} \textit{(v2.0.35)} & \textbf{\textit{ConfD}} \textit{(v7.6)} \\ 
+            
+            \hhline{|=|=|=|=|=|}  
+            RESTCONF Protocol & \href{https://datatracker.ietf.org/doc/html/rfc8040}{8040} & (\cmark) & \xmark & \cmark \\ 
+            
+            \hline
+             RESTCONF Extensions to Support the NMDA & \href{https://datatracker.ietf.org/doc/html/rfc8527}{8527} & (\cmark) & \xmark & \cmark\\ 
+            
+            \hline
+            YANG Patch Media Type & \href{https://datatracker.ietf.org/doc/html/rfc8072}{8072} & (\cmark) & \xmark & \cmark \\ 
+            
+            \hline
+            
+            \multicolumn{5}{c}{}\\
+            
+            % Other
+            \hline
+            \textbf{Other} &  & \textbf{\textit{Clixon}} \textit{(v5.4.0)} & \textbf{\textit{Netopeer2}} \textit{(v2.0.35)} & \textbf{\textit{ConfD}} \textit{(v7.6)} \\ 
+            
+            \hhline{|=|=|=|=|=|}
+            XML 1.0 & & (\cmark) & \cmark & \cmark \\ 
+            
+            \hline
+            XPath 1.0 & & (\cmark) & \cmark & \cmark \\ 
+            
+            \hline
+            
+            \multicolumn{5}{c}{}\\
+            
+            \multicolumn{5}{c}{(\cmark) = partially supported RFCs, further information: \url{https://clixon-docs.readthedocs.io/en/latest/standards.html}}\\
+            
+            
+        \end{tabular}
+    \end{center}
+    
+    \label{tab:clixon-features}
+\end{table*}
+
+%backup area
+
+%\textit{Netopeer2}, which replaced the original \textit{Netopeer} toolset, is already well-established in the field of network management and widely used.
+%It is maintained and further developed by the \textit{Tools for Monitoring and Configuration} department of \textit{CESNET}, a Czech association involved in researching advanced network technologies.
